@@ -1,0 +1,93 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 #define TRIG_PIN 9    // TRIG pin\
+#define ECHO_PIN 8    // ECHO pin\
+\
+#define LED1_PIN 2\
+#define LED2_PIN 3\
+#define LED3_PIN 4\
+#define LED4_PIN 5\
+#define LED5_PIN 6\
+\
+float duration_us, distance_cm;\
+\
+void setup() \{\
+  Serial.begin(9600);\
+  \
+  pinMode(TRIG_PIN, OUTPUT);    // configure TRIG pin as an OUTPUT\
+  pinMode(ECHO_PIN, INPUT);     // configure ECHO pin as an INPUT\
+  \
+  pinMode(LED1_PIN, OUTPUT);    // configure LED1 pin as an OUTPUT\
+  pinMode(LED2_PIN, OUTPUT);    // configure LED2 pin as an OUTPUT\
+  pinMode(LED3_PIN, OUTPUT);    // configure LED3 pin as an OUTPUT\
+  pinMode(LED4_PIN, OUTPUT);    // configure LED4 pin as an OUTPUT\
+  pinMode(LED5_PIN, OUTPUT);    // configure LED5 pin as an OUTPUT\
+\}\
+\
+void loop() \{\
+  // Ultrasonic Sensor\
+  digitalWrite(TRIG_PIN, LOW);\
+  delayMicroseconds(2);\
+  digitalWrite(TRIG_PIN, HIGH);\
+  delayMicroseconds(10);\
+  digitalWrite(TRIG_PIN, LOW);\
+  \
+  duration_us = pulseIn(ECHO_PIN, HIGH);\
+  distance_cm = duration_us * 0.034 / 2.0;\
+\
+  Serial.print("Ultrasonic distance: ");\
+  Serial.print(distance_cm);\
+  Serial.println(" cm");\
+\
+  // LED Sequence based on distance\
+  if (distance_cm < 10) \{\
+    // Turn on all LEDs\
+    digitalWrite(LED1_PIN, HIGH);\
+    digitalWrite(LED2_PIN, HIGH);\
+    digitalWrite(LED3_PIN, HIGH);\
+    digitalWrite(LED4_PIN, HIGH);\
+    digitalWrite(LED5_PIN, HIGH);\
+  \} else if (distance_cm >= 10 && distance_cm < 20) \{\
+    // Turn on first 4 LEDs\
+    digitalWrite(LED1_PIN, HIGH);\
+    digitalWrite(LED2_PIN, HIGH);\
+    digitalWrite(LED3_PIN, HIGH);\
+    digitalWrite(LED4_PIN, HIGH);\
+    digitalWrite(LED5_PIN, LOW);\
+  \} else if (distance_cm >= 20 && distance_cm < 30) \{\
+    // Turn on first 3 LEDs\
+    digitalWrite(LED1_PIN, HIGH);\
+    digitalWrite(LED2_PIN, HIGH);\
+    digitalWrite(LED3_PIN, HIGH);\
+    digitalWrite(LED4_PIN, LOW);\
+    digitalWrite(LED5_PIN, LOW);\
+  \} else if (distance_cm >= 30 && distance_cm < 40) \{\
+    // Turn on first 2 LEDs\
+    digitalWrite(LED1_PIN, HIGH);\
+    digitalWrite(LED2_PIN, HIGH);\
+    digitalWrite(LED3_PIN, LOW);\
+    digitalWrite(LED4_PIN, LOW);\
+    digitalWrite(LED5_PIN, LOW);\
+  \} else if (distance_cm >= 40 && distance_cm < 50) \{\
+    // Turn on first LED\
+    digitalWrite(LED1_PIN, HIGH);\
+    digitalWrite(LED2_PIN, LOW);\
+    digitalWrite(LED3_PIN, LOW);\
+    digitalWrite(LED4_PIN, LOW);\
+    digitalWrite(LED5_PIN, LOW);\
+  \} else \{\
+    // Turn off all LEDs\
+    digitalWrite(LED1_PIN, LOW);\
+    digitalWrite(LED2_PIN, LOW);\
+    digitalWrite(LED3_PIN, LOW);\
+    digitalWrite(LED4_PIN, LOW);\
+    digitalWrite(LED5_PIN, LOW);\
+  \}\
+\
+  delay(100);\
+\}}
